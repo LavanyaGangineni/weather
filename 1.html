@@ -1,0 +1,74 @@
+ <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        .con{
+            width:100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        nav{
+            width:100%;
+            height: 8vh;
+            background-color: black;
+            color:white;
+            text-align: center;
+            padding-top:10px;
+            font-size:30px;     
+        }
+        .l1{
+            padding-top:20px;
+        }
+        .main{
+            width:70%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding-top:20px;
+            
+        }
+    </style>
+  </head>
+  <body>
+    <div class="con">
+        <nav>Weather</nav>
+        <div class="l1">
+            <input placeholder="enter city" id="tf" />
+            <button onclick="fun()">Submit</button>
+
+        </div>
+      
+      <div class="main">
+        <div class="name"></div>
+        <div class="max-min"></div>
+        <div class="time"></div>
+      </div>
+    </div>
+    <script>
+      let tfr = document.getElementById("tf");
+      let divr = document.querySelectorAll(".main>div");
+      let fun = () => {
+        fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${tfr.value}&units=metric&appid=eedd52cc943dd9174f2c65178d154bdd`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            divr[0].innerHTML = `Name: ${data.name}`;
+            divr[1].innerHTML = `Temperature: ${data.main.temp} &#8451
+            Min-Temp: ${data.main.temp_min} &#8451  
+            Max-temp: ${data.main.temp_max} &#8451 `;
+            let d1 = new Date(data.sys.sunrise);
+            let d2 = new Date(data.sys.sunset);
+            divr[2].innerHTML = `Sunrise Time: ${d1.toLocaleTimeString()}` `Sunset Time: ${d2.toLocaleTimeString()}`;
+          });
+        tfr.value = "";
+      };
+    </script>
+  </body>
+</html>
